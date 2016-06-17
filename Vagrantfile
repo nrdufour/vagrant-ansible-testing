@@ -7,7 +7,7 @@ Vagrant.configure(2) do |config|
   # Amazon Linux
   config.vm.define "aws-linux" do |awslinux|
     awslinux.vm.hostname = "awstest"
-    awslinux.vm.box = "aws"
+    awslinux.vm.box = "marsdominion/aws"
 
     awslinux.vm.provider :aws do |aws, override|
       aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
