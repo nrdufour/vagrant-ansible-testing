@@ -11,7 +11,7 @@ Before Setting it up, you will need to define some environmental variable for th
       AWS_KEYPAIR_NAME
       MY_PRIVATE_AWS_SSH_KEY_PATH
       
-In STS, you will also need to set: 
+In STS, you will need to set: 
 
       AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY
@@ -23,8 +23,16 @@ In STS, you will also need to set:
 
 In the sts branch, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_SECURITY_TOKEN are set by the assume_role script if you use it.  We also have to define the Subnet ID and Security Group ID in AWS because we delete the default VPC.  I've also added the parameter to to use the private IP address since I don't generally setup production addresses on test instances.
 
-You will need to download a role to you local machine.  This can be done through Ansible Galaxy with the command:
-    `$ ansible-galaxy install [rolename]`
+Running the assume role script is very straight forward.  
+
+      % ./assume_role DEST_ACCT_ID DEST_ROLE
+
+where DEST_ACCT_ID is the AWS ARN for the account you want to run against and DEST_ROLE is the role you want to run as.
+
+To test the Ansible script, you will need to download a role to you local machine.  This can be done through Ansible Galaxy with the command:    
+      
+      % ansible-galaxy install [rolename]
+      
     
 You will then need to add the role to the playbook.yml file and then run the command `vagrant up`.  This will launch all of the instances defined and run the ansible against it.  
 
