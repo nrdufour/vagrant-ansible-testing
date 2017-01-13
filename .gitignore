@@ -2,3 +2,5 @@
 .idea/
 roles/
 env.rb
+.vagrant/
+vagrant-ansible-testing.iml
