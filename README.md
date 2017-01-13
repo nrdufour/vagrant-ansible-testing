@@ -1,7 +1,7 @@
 # Vagrant Testing of Ansible Scripts
 As we start to build out more and more roles at Blackbaud, we needed an easy way to test them.  Since we maintain servers both in local data centers and in AWS we decided to use Vagrant be able to quickly test our ansible files against both environments.
 
-The master branch includes a Vagrant file that will lanuch instances locally to VMware Fusion and to AWS.  It is loosely based on Jeff Geerling's [ansible-role-test-vms repository] (https://github.com/geerlingguy/ansible-role-test-vms).  The sts branch is geared towards an Amazon Only environment that utilizes role based cross account access via STS.  It includes a shell script (assume-role) that helps setup the environment for STS to work properly.
+The master branch includes a Vagrant file that will lanuch instances locally to VMware Fusion and to AWS.  It is loosely based on Jeff Geerling's [ansible-role-test-vms repository] (https://github.com/geerlingguy/ansible-role-test-vms).  The sts branch is geared towards an Amazon Only environment that utilizes role based cross account access via STS.
 
 ## Testing a Role
 Before Setting it up, you will need to define some environmental variable for the AWS portion to work correctly.  In Master, you will need to set:
@@ -11,28 +11,17 @@ Before Setting it up, you will need to define some environmental variable for th
       AWS_KEYPAIR_NAME
       MY_PRIVATE_AWS_SSH_KEY_PATH
       
-In STS, you will need to set: 
+In STS, the easiest thing to do is setup an env.rb file in your local directory, and add the following lines to it:
 
-      AWS_ACCESS_KEY_ID
-      AWS_SECRET_ACCESS_KEY
-      AWS_SECURITY_TOKEN
-      AWS_KEYPAIR_NAME
-      AWS_SUBNET_ID
-      AWS_SECURITY_GROUP_ID
-      MY_PRIVATE_AWS_SSH_KEY_PATH
-
-In the sts branch, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_SECURITY_TOKEN are set by the assume_role script if you use it.  We also have to define the Subnet ID and Security Group ID in AWS because we delete the default VPC.  I've also added the parameter to to use the private IP address since I don't generally setup production addresses on test instances.
-
-Running the assume role script is very straight forward.  
-
-      % ./assume_role DEST_ACCT_ID DEST_ROLE
-
-where DEST_ACCT_ID is the AWS ARN for the account you want to run against and DEST_ROLE is the role you want to run as.
-
-To test the Ansible script, you will need to download a role to you local machine.  This can be done through Ansible Galaxy with the command:    
-      
-      % ansible-galaxy install [rolename]
-      
+    # -*- mode: ruby -*-
+    # vi: set ft=ruby :
+    
+    ENV['AWS_PROFILE'] = 'my-aws-profile'
+    ENV['ROLE_ARN'] = 'arn:aws:iam::XXXXXXXXXXXX:role/platform-engineering'
+    ENV['AWS_KEYPAIR_NAME'] = 'my-keypair'
+    ENV['MY_PRIVATE_AWS_SSH_KEY_PATH'] = '/Users/me/.ssh/my-keypair'
+    ENV['AWS_SUBNET'] = 'subnet-xxxxxxxx'
+    ENV['AWS_SG'] = 'sg-xxxxxxxx'
     
 You will then need to add the role to the playbook.yml file and then run the command `vagrant up`.  This will launch all of the instances defined and run the ansible against it.  
 
