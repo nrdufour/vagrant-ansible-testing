@@ -4,3 +4,4 @@ roles/
 env.rb
 .vagrant/
 vagrant-ansible-testing.iml
+playbook.retry

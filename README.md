@@ -4,12 +4,17 @@ As we start to build out more and more roles at Blackbaud, we needed an easy way
 The master branch includes a Vagrant file that will lanuch instances locally to VMware Fusion and to AWS.  It is loosely based on Jeff Geerling's [ansible-role-test-vms repository] (https://github.com/geerlingguy/ansible-role-test-vms).  The sts branch is geared towards an Amazon Only environment that utilizes role based cross account access via STS.
 
 ## Testing a Role
-Before Setting it up, you will need to define some environmental variable for the AWS portion to work correctly.  In Master, you will need to set:
+Before Setting it up, you will need to define some environmental variable for the AWS portion to work correctly.  In Master, you can set the individual environmental variables, or you can create an env.rb file in your local directory with the following:
 
-      AWS_ACCESS_KEY_ID
-      AWS_SECRET_ACCESS_KEY
-      AWS_KEYPAIR_NAME
-      MY_PRIVATE_AWS_SSH_KEY_PATH
+    # -*- mode: ruby -*-
+    # vi: set ft=ruby :
+        
+    ENV['AWS_ACCESS_KEY_ID'] = 'XXXXXXXXXXXXXXXXXXXX'
+    ENV['AWS_SECRET_ACCESS_KEY'] = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    ENV['AWS_KEYPAIR_NAME'] = 'my-keypair'
+    ENV['MY_PRIVATE_AWS_SSH_KEY_PATH'] = '/Users/me/.ssh/my-keypair.pem'
+    ENV['AWS_SUBNET'] = 'subnet-xxxxxxxx'
+    ENV['AWS_SG'] = 'sg-xxxxxxxx'
       
 In STS, the easiest thing to do is setup an env.rb file in your local directory, and add the following lines to it:
 
@@ -19,7 +24,7 @@ In STS, the easiest thing to do is setup an env.rb file in your local directory,
     ENV['AWS_PROFILE'] = 'my-aws-profile'
     ENV['ROLE_ARN'] = 'arn:aws:iam::XXXXXXXXXXXX:role/platform-engineering'
     ENV['AWS_KEYPAIR_NAME'] = 'my-keypair'
-    ENV['MY_PRIVATE_AWS_SSH_KEY_PATH'] = '/Users/me/.ssh/my-keypair'
+    ENV['MY_PRIVATE_AWS_SSH_KEY_PATH'] = '/Users/me/.ssh/my-keypair.pem'
     ENV['AWS_SUBNET'] = 'subnet-xxxxxxxx'
     ENV['AWS_SG'] = 'sg-xxxxxxxx'
     
