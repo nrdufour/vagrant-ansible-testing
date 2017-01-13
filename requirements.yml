@@ -1,0 +1,15 @@
+# requirements.yaml
+
+# EXAMPLE USAGE
+#
+# Pull from Galaxy:
+#
+#     - name: blackbaud.linux-hardening
+#
+# Pull from Github
+#
+#     # from Github
+#     - name:    marsdominion.ansible-role
+#       src:     git@github.com:marsdominion/ansible-role.git
+#       scm:     git
+#       version: master
