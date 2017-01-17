@@ -4,7 +4,6 @@
 require "json"
 
 # Source the Config File if it exists
-
 if File.exists?('env.rb')
     require_relative "./env.rb"
 else
@@ -59,10 +58,9 @@ if aws_sg.nil?
   exit(1)
 end
 
-# Run the STS Command
-sts_role = `aws sts assume-role --role-arn "${ROLE_ARN}" --role-session-name "vagrant" --query 'Credentials' --output json`
 
-credstore = JSON.parse(sts_role)
+# Get the Credentials
+credstore = JSON.parse(`aws sts assume-role --role-arn "${ROLE_ARN}" --role-session-name "vagrant" --query 'Credentials' --output json`)
 
 
 

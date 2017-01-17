@@ -2,6 +2,7 @@
   become: true
   roles:
 
+
   tasks:
     - name: Print IP Address
       debug:
